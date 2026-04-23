@@ -6,8 +6,10 @@
 
 const TRACKS = [
   "music/Bowling - Wii Sports OST.mp3",
-  "music/John Mayer - No Such Thing.mp3",
-  "music/Zero 7 - Destiny (Official Video) ft. Sia, Sophie Barker.mp3",
+  "music/No Such Thing - John Mayer.mp3",
+  "music/Destiny - Zero 7 ft. Sia, Sophie Barker.mp3",
+  "music/Outbound - After.mp3",
+  "music/Pretending - Sweet Trip.mp3",
 ];
 
 // ── State ──────────────────────────────────────
@@ -84,26 +86,22 @@ function togglePlay() {
   isPlaying ? pause() : play();
 }
 
-// ── Controls — shuffle on skip ──────────────────
+// ── Controls — sequential order ────────────────
 playPauseBtn.addEventListener('click', togglePlay);
 
 prevBtn.addEventListener('click', () => {
   if (TRACKS.length === 0) return;
-  loadTrack(randomOther(), isPlaying);
+  loadTrack((currentIndex - 1 + TRACKS.length) % TRACKS.length, isPlaying);
 });
 
 nextBtn.addEventListener('click', () => {
   if (TRACKS.length === 0) return;
-  loadTrack(randomOther(), isPlaying);
+  loadTrack((currentIndex + 1) % TRACKS.length, isPlaying);
 });
 
-// Auto-advance to a random track when one ends
+// Auto-advance to next track in order when one ends
 audio.addEventListener('ended', () => {
-  if (TRACKS.length > 1) {
-    loadTrack(randomOther(), true);
-  } else {
-    pause();
-  }
+  loadTrack((currentIndex + 1) % TRACKS.length, true);
 });
 
 // ── Progress bar ───────────────────────────────
